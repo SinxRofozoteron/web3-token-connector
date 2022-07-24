@@ -1,4 +1,4 @@
+from .src import *
 from .tokens import *
-from .wallet import *
 
-__all__ = tokens.__all__ + wallet.__all__
+__all__ = tokens.__all__ + src.__all__

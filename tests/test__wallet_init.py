@@ -2,7 +2,7 @@ import pytest
 from web3 import Web3
 from web3.exceptions import InvalidAddress
 
-from wallet import Wallet
+from src.wallet import Wallet
 
 from .fixtures import TEthAccount
 
