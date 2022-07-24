@@ -10,17 +10,31 @@ from tokens import ABI
 
 
 @pytest.fixture(scope="function")
-def balanceOf_mock(mocker: MockerFixture, wallet: Wallet):
+def balanceOf_mock(mocker: MockerFixture, wallet: Wallet) -> MagicMock:
     """Creates mock for ERC20 contract balanceOf function."""
 
-    balanceOfMock = mocker.stub()
+    balanceOf_mock = mocker.stub()
     address = "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
     functions = ContractFunctions(abi=ABI, address=address, web3=wallet.web3)
-    mocker.patch.object(functions, "balanceOf", new=balanceOfMock)
+    mocker.patch.object(functions, "balanceOf", new=balanceOf_mock)
     contract_mock = wallet.web3.eth.contract(wallet.web3.toChecksumAddress(address))
     mocker.patch.object(contract_mock, "functions", new=functions)
     mocker.patch.object(wallet.web3.eth, "contract", return_value=contract_mock)
-    return balanceOfMock
+    return balanceOf_mock
+
+
+@pytest.fixture(scope="function")
+def transfer_mock(mocker: MockerFixture, wallet: Wallet) -> MagicMock:
+    """Creates mock for ERC20 contract transfer function."""
+
+    transfer_mock = mocker.stub()
+    address = "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
+    functions = ContractFunctions(abi=ABI, address=address, web3=wallet.web3)
+    mocker.patch.object(functions, "transfer", new=transfer_mock)
+    contract_mock = wallet.web3.eth.contract(wallet.web3.toChecksumAddress(address))
+    mocker.patch.object(contract_mock, "functions", new=functions)
+    mocker.patch.object(wallet.web3.eth, "contract", return_value=contract_mock)
+    return transfer_mock
 
 
 @pytest.fixture(scope="function")
@@ -55,7 +69,7 @@ def get_function_call_mock(mocker: MockerFixture) -> Callable[[Callable], MagicM
               Defaults to None.
 
         Returns:
-            _type_: _description_
+            MagicMock
         """
         call_mock: MagicMock = mocker.stub("call_mock")
         call_mock.return_value = return_value
@@ -69,4 +83,54 @@ def get_function_call_mock(mocker: MockerFixture) -> Callable[[Callable], MagicM
     return create_mock
 
 
-__all__ = ["balanceOf_mock", "get_function_call_mock"]
+@pytest.fixture(scope="function")
+def get_estimate_gas_mock(mocker: MockerFixture) -> Callable[[Callable], MagicMock]:
+    """Helper with mocking contract function estimate_gas method.
+
+    Example
+    -------
+      def test(send_token_mock, get_estimate_gas_mock, wallet):
+        estimate_gas_mock = get_estimate_gas_mock(send_token_mock)
+
+        wallet.send_token(test_address, test_to_account, test_amount)
+
+        # Verify contract.functions.transfer(to_address, amount).estimate_gas() call
+        assert estimate_gas_mock.assert_called_once()
+
+    Return
+    ------
+      Wrapper function that wraps around another function and
+      returns a mock of call().
+    """
+    estimate_gas_mock = mocker.stub("estimate_gas_mock")
+
+    class FunctionReturnMock:
+        estimate_gas = estimate_gas_mock
+
+    def create_mock(
+        contract_function: MagicMock, return_value: any = None
+    ) -> MagicMock:
+        """Creates mock for estimate_gas() function on contract function result.
+
+        Args:
+            contract_function (MagicMock): mock of contract function
+            return_value (any, optional):
+              Mock value for estimate_gas function to return.
+              Defaults to None.
+
+        Returns:
+            MagicMock
+        """
+        estimate_gas_mock.return_value = return_value
+        contract_function.return_value = FunctionReturnMock
+        return estimate_gas_mock
+
+    return create_mock
+
+
+__all__ = [
+    "balanceOf_mock",
+    "get_function_call_mock",
+    "transfer_mock",
+    "get_estimate_gas_mock",
+]
