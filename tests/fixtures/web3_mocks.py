@@ -56,14 +56,33 @@ def get_fee_history_mock(
         "fee_history",
         new=fee_history_mock,
     )
+    test_fee_history: FeeHistory = {
+        "reward": [
+            [10, 20, 30],
+            [10, 20, 30],
+            [10, 20, 30],
+            [10, 20, 30],
+            [10, 20, 30],
+        ],
+        "baseFeePerGas": [99],
+    }
 
-    def create_mock(return_value: FeeHistory = None) -> MagicMock:
+    def create_mock(return_value: FeeHistory = test_fee_history) -> MagicMock:
         """Creates fee_history_mock.
 
         Args:
             return_value (FeeHistory, optional):
               Value to return from fee_history_mock.
-              Defaults to None.
+              Defaults to: {
+                    "reward": [
+                        [10, 20, 30],
+                        [10, 20, 30],
+                        [10, 20, 30],
+                        [10, 20, 30],
+                        [10, 20, 30],
+                    ],
+                    "baseFeePerGas": [99],
+                }.
 
         Returns:
             MagicMock

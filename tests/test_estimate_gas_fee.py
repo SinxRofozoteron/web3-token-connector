@@ -9,7 +9,7 @@ from src.wallet import Wallet
 
 class TestEstimateGasFee:
 
-    test_fee_history: FeeHistory = {
+    test_fee_history = {
         "reward": [
             [10, 20, 30],
             [10, 20, 30],

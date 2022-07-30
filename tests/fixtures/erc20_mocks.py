@@ -128,9 +128,57 @@ def get_estimate_gas_mock(mocker: MockerFixture) -> Callable[[Callable], MagicMo
     return create_mock
 
 
+@pytest.fixture(scope="function")
+def get_build_transaction_mock(
+    mocker: MockerFixture,
+) -> Callable[[Callable], MagicMock]:
+    """Helper with mocking contract function build_transaction method.
+
+    Example
+    -------
+      def test(send_token_mock, get_build_transaction_mock, wallet):
+        build_transaction_mock = get_build_transaction_mock(send_token_mock)
+
+        wallet.send_token(test_address, test_to_account, test_amount)
+
+        # Verify contract.functions.transfer(
+        #          to_address, amount
+        #        ).build_transaction() call
+        assert build_transaction_mock.assert_called_once()
+
+    Return
+    ------
+      Wrapper function that wraps around another function and
+      returns a mock of call().
+    """
+    build_transaction_mock = mocker.stub("build_transaction_mock")
+
+    class FunctionReturnMock:
+        build_transaction = build_transaction_mock
+
+    def create_mock(function: MagicMock, return_value: any = None) -> MagicMock:
+        """Creates mock for build_transaction() function on contract function result.
+
+        Args:
+            function (MagicMock): mock
+            return_value (any, optional):
+              Mock value for build_transaction function to return.
+              Defaults to None.
+
+        Returns:
+            MagicMock
+        """
+        build_transaction_mock.return_value = return_value
+        function.return_value = FunctionReturnMock
+        return build_transaction_mock
+
+    return create_mock
+
+
 __all__ = [
     "balanceOf_mock",
     "get_function_call_mock",
     "transfer_mock",
     "get_estimate_gas_mock",
+    "get_build_transaction_mock",
 ]

@@ -1,10 +1,12 @@
 from typing import TypedDict
 
+from eth_typing.evm import ChecksumAddress, HexStr
+
 
 class TEthAccount(TypedDict):
 
-    address: str
-    private_key: str
+    address: ChecksumAddress
+    private_key: HexStr
 
 
 __all__ = ["TEthAccount"]
