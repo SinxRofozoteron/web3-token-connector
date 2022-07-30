@@ -126,7 +126,7 @@ class Wallet:
         self,
         token_address: Address,
         to_address: Address,
-        amount: float,
+        amount: Wei,
         priority: TPriority = "low",
     ) -> TxReceipt:
         """Send token.
@@ -134,7 +134,7 @@ class Wallet:
         Args:
             token_address (Address): Token address
             to_address (Address): Address of a reciever
-            amount (float): amount of tokens to send
+            amount (Wei): amount of tokens to send in Wei
             priority (TPriority): transaction priority
               Possible values: low, medium, high
 
@@ -181,7 +181,7 @@ class Wallet:
     def send(
         self,
         to_address: Address,
-        amount: Union[float, Wei],
+        amount: Wei,
         priority: TPriority = "low",
         token_address: Optional[Address] = None,
     ) -> TxReceipt:
@@ -189,7 +189,7 @@ class Wallet:
 
         Args:
             to_address (Address): Address of a reciever
-            amount (int): amount of tokens to send, or amout of ETH (in Wei)
+            amount (Wei): amount to send in Wei
             priority (TPriority): Transaction priority.
               Possible values: low, medium, high. Defaults to 'low'.
             token_address (Address, optional):
