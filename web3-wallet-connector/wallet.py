@@ -3,13 +3,12 @@ from typing import Optional, Union
 
 from eth_typing.encoding import HexStr
 from eth_typing.evm import Address, ChecksumAddress
+from tokens import ABI
 from web3 import Web3
 from web3.exceptions import InvalidAddress
 from web3.middleware.signing import construct_sign_and_send_raw_middleware
 from web3.providers.base import BaseProvider
 from web3.types import TxParams, TxReceipt, Wei
-
-from tokens import ABI
 
 from .types import TFeesByPriority, TPriority
 

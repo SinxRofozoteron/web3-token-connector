@@ -1,0 +1,15 @@
+name: Check Commit Message
+
+on:
+  workflow_call:
+
+jobs:
+  check-commit-message:
+    name: Verify commit message starts with a word needed for semantic versioning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify starts with expected word
+        uses: gsactions/commit-message-checker@v1
+        with: 
+          pattern: '^(feat|fix|docs|style|refactor|perf|test|build):'
+          error: 'Commit message needs to start with one of the following: feat, fix, docs, style, refactor, perf, test or build.'
