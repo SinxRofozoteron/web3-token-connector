@@ -3,13 +3,16 @@ name: Semantic Release
 on:
   push:
     branches: 
-      - master
+      - main
 
 jobs:
+  check-commit-message:
+    uses: SinxRofozoteron/web3-token-connector/.github/CheckCommitMessage.yml
+
   release:
+    needs: check-commit-message
     runs-on: ubuntu-latest
     concurrency: release
-
     steps:
       - name: Checkout into main branch
         uses: actions/checkout@v2
