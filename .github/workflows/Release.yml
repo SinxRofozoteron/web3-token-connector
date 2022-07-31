@@ -7,7 +7,6 @@ on:
 
 jobs:
   release:
-    needs: check-commit-message
     runs-on: ubuntu-latest
     concurrency: release
     steps:
