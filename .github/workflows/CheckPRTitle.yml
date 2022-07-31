@@ -1,0 +1,14 @@
+name: Check PR title
+
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  name: Verify PR title starts with a word needed for semantic versioning
+  runs-on: ubuntu-latest
+  steps:
+    - uses: Slashgear/action-check-pr-title@2.0.0
+      with: 
+        regex: '^(feat|fix|docs|style|refactor|perf|test|build):'
