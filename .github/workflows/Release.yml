@@ -6,9 +6,6 @@ on:
       - main
 
 jobs:
-  check-commit-message:
-    uses: SinxRofozoteron/web3-token-connector/.github/CheckCommitMessage.yml
-
   release:
     needs: check-commit-message
     runs-on: ubuntu-latest
