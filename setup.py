@@ -27,5 +27,5 @@ setup(
     url="https://github.com/SinxRofozoteron/web3-token-connector",
     license="MIT",
     packages=["web3-wallet-connector"],
-    install_requires=["web3==6.0.0b4"],
+    install_requires=["web3==6.0.0b10"],
 )
